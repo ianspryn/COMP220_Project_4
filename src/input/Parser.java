@@ -9,6 +9,8 @@ public class Parser {
 	// Will parse an input into operations
 	
 	public ArrayList<ArrayList<Operation>> parseString(String parse){
+		
+		
 				
 		return EEEEEEEEEEEEEEEEEE; //return an ArrayList
 	}
