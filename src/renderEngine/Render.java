@@ -15,6 +15,13 @@ public class Render {
 	private static Graphics g;
 	public static double angle = Math.PI/4;
 	
+	/**
+	 * The main method doing all of the rendering set to 60 FPS.
+	 * Called by the ticking method in Display.
+	 * 
+	 * @param canvas The Display's Canvas.
+	 */
+	
 	public static void mainRender(Canvas canvas){
 		bs = canvas.getBufferStrategy();
 		if(bs == null){
@@ -33,6 +40,13 @@ public class Render {
 		g.dispose();
 	}
 	
+	/**
+	 * Renders the coordinate axes.
+	 * 
+	 * @param x Canvas's width
+	 * @param y Canvas's height
+	 */
+	
 	public static void render3DGraph(int x, int y){
 		int centerx = x/2, centery = y/2;
 		
@@ -45,6 +59,13 @@ public class Render {
 		g.setColor(new Color(127,127,255));
 		g.drawLine(centerx - (int)(Math.cos(angle)*100), centery + (int)(Math.cos(angle)*Math.sin(angle)*100), centerx + (int)(Math.cos(angle)*100), centery - (int)(Math.cos(angle)*Math.sin(angle)*100));
 	}
+	
+	/**
+	 * Renders the particles.
+	 * 
+	 * @param x Center of the Canvas's width
+	 * @param y Center of the Canvas's height
+	 */
 	
 	public static void renderParticles(int x, int y){
 		ArrayList<Particle> field = ParticleField.getField();

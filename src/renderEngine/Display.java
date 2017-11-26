@@ -11,13 +11,13 @@ public class Display implements Runnable{
 	private static Canvas canvas;
 	public static int width, height;
 	
+	/**
+	 * Creates the screen and the components needed to start rendering
+	 */
+	
 	public Display(){
 		width = 640;
 		height = 360;
-		createDisplay();
-	}
-	
-	public void createDisplay(){
 		frame = new JFrame("Particle Field");
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +31,11 @@ public class Display implements Runnable{
 		frame.pack();
 	}
 	
-
+	/**
+	 * A loop that ticks every 60 seconds for rendering the particles to the screen. 
+	 * This also displays the ticks and how many spare loops it was able to go through while waiting for the next tick. 
+	 */
+	
 	public void run() {
 		try {
 			
@@ -58,7 +62,7 @@ public class Display implements Runnable{
 				}
 				
 				if(timer >= 1000000000){
-					System.out.println("Ticks: " + ticks + " Loops: " + loops);
+					System.out.println("Render Ticks: " + ticks + " Loops: " + loops);
 					ticks = 0;
 					timer = 0;
 					loops = 0;
@@ -73,6 +77,7 @@ public class Display implements Runnable{
 	}
 	
 	private void tick(){
+		//TODO: If this is all tick is, it should be removed
 		Render.mainRender(canvas);
 	}
 

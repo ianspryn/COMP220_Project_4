@@ -5,6 +5,9 @@ import java.util.Random;
 
 public class ParticleField {
 	
+	// This is almost a stub class, it currently only contains the particle field and generates a new one when the program is started.
+	// Hence, this class may be unnecessary.
+	
 	private static ArrayList<Particle> particles = new ArrayList<Particle>();
 	
 	public static void createField(int number){
