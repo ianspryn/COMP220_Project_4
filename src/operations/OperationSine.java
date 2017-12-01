@@ -2,15 +2,15 @@ package operations;
 
 public class OperationSine implements Operation {
 
-	Double a;
+	Operation a;
 	
-	public OperationSine(double a){
+	public OperationSine(Operation a){
 		this.a = a;
 	}
 	
 	@Override
 	public double operate() {
-		return Math.sin(a);
+		return Math.sin(a.operate());
 	}
 
 }

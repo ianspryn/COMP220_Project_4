@@ -2,16 +2,16 @@ package operations;
 
 public class OperationAdd implements Operation {
 	
-	Double a, b;
+	Operation a, b;
 	
-	public OperationAdd(Double a, Double b){
+	public OperationAdd(Operation a, Operation b){
 		this.a = a;
 		this.b = b;
 	}
 
 	@Override
 	public double operate() {
-		return a + b;
+		return a.operate() + b.operate();
 	}
 
 }
