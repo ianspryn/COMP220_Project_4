@@ -1,3 +1,5 @@
+import operations.OperationAdd;
+import operations.OperationConstant;
 import physicsEngine.Engine;
 import physicsEngine.ParticleField;
 import renderEngine.Display;
