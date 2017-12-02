@@ -10,15 +10,19 @@ public class Parser {
 	
 	// Will parse an input into operations
 	
-//	public static void main(String args[]) {
-//		Scanner scnr = new Scanner(System.in);
-//		String parse = scnr.nextLine();
-//		System.out.println(PostFix(parse.toLowerCase().replaceAll("\\s+","")));
-//	}
-	
-	public ArrayList<ArrayList<Operation>> parseString(String parse){
+	//TEST TEXT INPUT
+	public static void main(String args[]) {
+		Scanner scnr = new Scanner(System.in);
+		while (true) {
+			String parse = scnr.nextLine();
+			System.out.println(PostFix(parse.toLowerCase().replaceAll("\\s+","")));
+		}
 		
-		ArrayList<ArrayList<Operation>> operation = new ArrayList<ArrayList<Operation>>();
+	}
+	
+	public Operation parseString(String parse){
+		
+		
 		
 		//Convert from an Inorder expression (Infix) to a Postfix expression (Postfix), convert to lower case, and remove all spaces
 		PostFix(parse.toLowerCase().replaceAll("\\s+",""));
