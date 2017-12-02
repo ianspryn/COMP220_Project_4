@@ -1,6 +1,7 @@
 package input;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import operations.Operation;
 
@@ -10,8 +11,16 @@ public class Parser {
 	
 	public ArrayList<ArrayList<Operation>> parseString(String parse){
 		
+		parse.replaceAll("\\s+","");
+		Scanner equation = new Scanner(parse);
+		equation.useDelimiter("+|-|*|/|s|S|c|C|t|T");
 		
-				
+		if (equation.hasNextDouble()) {
+			Double a = equation.nextDouble();
+			if (equation.)
+		}
+		
+		
 		return EEEEEEEEEEEEEEEEEE; //return an ArrayList
 	}
 	
