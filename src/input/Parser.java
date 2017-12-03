@@ -1,6 +1,6 @@
 package input;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -10,220 +10,111 @@ public class Parser {
 	
 	// Will parse an input into operations
 	
-	//TEST TEXT INPUT
-	public static void main(String args[]) {
+	public static void main(String[] args) throws IOException {
 		Scanner scnr = new Scanner(System.in);
-		//while (true) {
-			String parse = scnr.nextLine();
-			System.out.println(PostFix(parse.toLowerCase().replaceAll("\\s+","")));
-		//}
-		
+		String parse = scnr.nextLine();
+		System.out.println(new Parser(parse.toLowerCase().replaceAll("\\s+", "")).doTrans());
 	}
 	
-	public Operation parseString(String parse){
-		
-		
-		
-		//Convert from an Inorder expression (Infix) to a Postfix expression (Postfix), convert to lower case, and remove all spaces
-		PostFix(parse.toLowerCase().replaceAll("\\s+",""));
-		
-		Scanner equation = new Scanner(parse);
-		equation.useDelimiter("");
-		
-		if (equation.hasNextDouble()) {
-			Double a = equation.nextDouble();
-			
-		}
-		
-		
-		return EEEEEEEEEEEEEEEEEE; //return an ArrayList
-	}
-	
-	/*public static double eval(final String str) {
-	    return new Object() {
-	        int pos = -1, ch;
-
-	        void nextChar() {
-	            ch = (++pos < str.length()) ? str.charAt(pos) : -1;
-	        }
-
-	        boolean eat(int charToEat) {
-	            while (ch == ' ') nextChar();
-	            if (ch == charToEat) {
-	                nextChar();
-	                return true;
-	            }
-	            return false;
-	        }
-
-	        double parse() {
-	            nextChar();
-	            double x = parseExpression();
-	            if (pos < str.length()) {
-	            	throw new RuntimeException("Unexpected: " + (char)ch);
-	            }
-	            return x;
-	        }
-
-	        // Grammar:
-	        // expression = term | expression `+` term | expression `-` term
-	        // term = factor | term `*` factor | term `/` factor
-	        // factor = `+` factor | `-` factor | `(` expression `)`
-	        //        | number | functionName factor | factor `^` factor
-
-	        double parseExpression() {
-	            double x = parseTerm();
-	            for (;;) {
-	                if (eat('+')) {
-	                	x += parseTerm(); // addition
-	                }
-	                else if (eat('-')) {
-	                	x -= parseTerm(); // subtraction
-	                }
-	                else {
-	                	return x;
-	                }
-	            }
-	        }
-
-	        double parseTerm() {
-	            double x = parseFactor();
-	            for (;;) {
-	                if (eat('*')) {
-	                	x *= parseFactor(); // multiplication
-	                }
-	                else if (eat('/')) {
-	                	x /= parseFactor(); // division
-	                }
-	                else {
-	                	return x;
-	                }
-	            }
-	        }
-
-	        double parseFactor() {
-	            if (eat('+')) {
-	            	return parseFactor(); // unary plus
-	            }
-	            if (eat('-')) {
-	            	return -parseFactor(); // unary minus
-	            }
-
-	            double x;
-	            int startPos = this.pos;
-	            if (eat('(')) { // parentheses
-	                x = parseExpression();
-	                eat(')');
-	            } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
-	                while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
-	                x = Double.parseDouble(str.substring(startPos, this.pos));
-	            } else if (ch >= 'a' && ch <= 'z') { // functions
-	                while (ch >= 'a' && ch <= 'z') nextChar();
-	                String func = str.substring(startPos, this.pos);
-	                x = parseFactor();
-	                if (func.equals("sqrt")) {
-	                	x = Math.sqrt(x);
-	                }
-	                else if (func.equals("sin")) {
-	                	x = Math.sin(Math.toRadians(x));
-	                }
-	                else if (func.equals("cos")) {
-	                	x = Math.cos(Math.toRadians(x));
-	                }
-	                else if (func.equals("tan")) {
-	                	x = Math.tan(Math.toRadians(x));
-	                }
-	                else {
-	                	throw new RuntimeException("Unknown function: " + func);
-	                }
-	            } else {
-	                throw new RuntimeException("Unexpected: " + (char)ch);
-	            }
-
-	            if (eat('^')) {
-	            	x = Math.pow(x, parseFactor()); // exponentiation
-	            }
-
-	            return x;
-	        }
-	    }.parse();
-	}*/
-	
-	public static String PostFix(String parse) {
-
-	    Stack<Character> stack = new Stack<Character>();
-	    StringBuilder postFix = new StringBuilder(parse.length());
+	private Stack<Character> stack;
+	   private String parse;
+	   private String output = "";
 	   
-	    
-	    for (int i = 0; i < parse.length(); i++) {
-	    	
-	    	char c;
-	    	
-	        if (!isOperator(parse.charAt(i))) {
-	        	for (int j = i; j < parse.length(); j++) {
-	        		if (!Character.isDigit(parse.charAt(j))) {
-	        			break;
-	        		}
-	        		postFix.append(parse.charAt(j));
-	        		i = j;
-	        	}
-//	        	while (Character.isDigit(parse.charAt(i)) && i < parse.length()) {
-//	        		postFix.append(parse.charAt(i));
-//	        		++i;	        		
-//	        	}
-	        	postFix.append(" ");
-	        } else {
-	         c = parse.charAt(i);
-	            if (c == ')') {
-	                while (!stack.isEmpty() && stack.peek() != '(') {
-	                    postFix.append(stack.pop() + " ");
-	                }
-	                if (!stack.isEmpty()) {
-	                    stack.pop();
-	                }
-	            } else {
-	                if (!stack.isEmpty() && !isLowerPrecedence(c, stack.peek())) {
-	                    stack.push(c);
-	                }
-	                else {
-	                    while (!stack.isEmpty() && isLowerPrecedence(c, stack.peek())) {
-	                        char pop = stack.pop();
-	                        if (c != '(') {
-	                            //postFix.append(pop);
-	                        } else {
-	                          c = pop;
-	                        }
-	                    }
-	                    stack.push(c);
-	                }
+	   public Parser(String parse) {
+	      this.parse = parse;
+	      stack = new Stack<Character>();
+	   }
+	   
+	   public String doTrans() {
+	      for (int i = 0; i < parse.length(); i++) {
+	         char c = parse.charAt(i);
+	         switch (c) {
+	            case '+':
+	            case '-':
+	               gotOper(c, 1);
+	               break;
+	            case '*':
+	            case '/':
+	            case '^':
+	               gotOper(c, 2);
+	               break;
+	            case '(':
+	               stack.push(c);
+	               break;
+	            case ')':
+	               gotParen();
+	               break;
+	            default:
+	            	for (int j = i; j < parse.length(); j++) {
+	            		if (!Character.isDigit(parse.charAt(j))) {
+	            			break;
+		        		}
+		        		output += (parse.charAt(j));
+		        		i = j;
+		        	}
+	            	output += " ";
+	            	break;
 	            }
-	        }
-	    }
-	    while (!stack.isEmpty()) {
-	      postFix.append(stack.pop());
-	    }
-	    return postFix.toString();
-	}
+	   }
+	      while (!stack.isEmpty()) {
+	    	  if (stack.peek() != '(') {
+	    		  output += stack.pop() + " ";
+	    	  } else {
+	    		  stack.pop();
+	    	  }
+	      }
+	      return output;
+	   }
+	   
+	   public void gotOper(char opThis, int prec1) {
+	      while (!stack.isEmpty()) {
+	    	  if (stack.peek() != '(') {
+	    		  char c = stack.pop();
+	    		  if ((c == '+' || c == '-') && prec1 == 2) {
+		           	 stack.push(c);
+		           	 break;
+		           	 } else {
+		           		 output += c + " ";
+		           		 }
+	    		  } else {
+	    			  break;
+		         }
+	      }
+	      stack.push(opThis);
+	   }
+	   
+	   public void gotParen() { 
+	      while (!stack.isEmpty()) {
+	         if (stack.peek() != '('){
+	        	 output += stack.pop() + " ";
+	         } else {
+	        	 stack.pop();
+	        	 break;
+	         }
+	      }
+	   }
 	
-	private static boolean isOperator(char c) {
-	    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')';
-	}
-
-	private static boolean isLowerPrecedence(char a, char b) {
-	    switch (a) {
-	        case '+':
-	        case '-':
-	            return !(b == '+' || b == '-');
-	        case '*':
-	        case '/':
-	            return b == '^' || b == '(';
-	        case '^':
-	            return b == '(';
-	        case '(':
-	            return true;
-	        default:
-	            return false;
-	    }
-	}
+//	public Operation parseString(String parse){
+//		
+//		
+//		
+//		//Convert from an Inorder expression (Infix) to a Postfix expression (Postfix), convert to lower case, and remove all spaces
+//		new Parser(parse.toLowerCase().replaceAll("\\s+", "")).doTrans();
+//		
+//		
+//		
+//		Scanner equation = new Scanner(parse);
+//		equation.useDelimiter("");
+//		
+//		if (equation.hasNextDouble()) {
+//			Double a = equation.nextDouble();
+//			
+//		}
+//		
+//		
+//		return EEEEEEEEEEEEEEEEEE; //return an ArrayList
+//	}
+	
+	
 
 }
