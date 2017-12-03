@@ -17,82 +17,82 @@ public class Parser {
 	}
 	
 	private Stack<Character> stack;
-	   private String parse;
-	   private String output = "";
+	private String parse;
+	private String output = "";
 	   
-	   public Parser(String parse) {
-	      this.parse = parse;
-	      stack = new Stack<Character>();
-	   }
+	public Parser(String parse) {
+		this.parse = parse;
+		stack = new Stack<Character>();
+	}
 	   
-	   public String doTrans() {
-	      for (int i = 0; i < parse.length(); i++) {
-	         char c = parse.charAt(i);
-	         switch (c) {
-	            case '+':
-	            case '-':
-	               gotOper(c, 1);
-	               break;
+	public String doTrans() {
+		for (int i = 0; i < parse.length(); i++) {
+			char c = parse.charAt(i);
+			switch (c) {
+				case '+':
+				case '-':
+					gotOper(c, 1);
+					break;
 	            case '*':
 	            case '/':
 	            case '^':
-	               gotOper(c, 2);
-	               break;
+	            	gotOper(c, 2);
+	            	break;
 	            case '(':
-	               stack.push(c);
-	               break;
+	            	stack.push(c);
+	            	break;
 	            case ')':
-	               gotParen();
-	               break;
+	            	gotParen();
+	            	break;
 	            default:
 	            	for (int j = i; j < parse.length(); j++) {
 	            		if (!Character.isDigit(parse.charAt(j))) {
 	            			break;
-		        		}
-		        		output += (parse.charAt(j));
-		        		i = j;
-		        	}
+	            		}
+	            		output += (parse.charAt(j));
+	            		i = j;
+	            	}
 	            	output += " ";
 	            	break;
-	            }
-	   }
-	      while (!stack.isEmpty()) {
-	    	  if (stack.peek() != '(') {
-	    		  output += stack.pop() + " ";
-	    	  } else {
-	    		  stack.pop();
-	    	  }
-	      }
-	      return output;
-	   }
+			}
+		}
+		while (!stack.isEmpty()) {
+			if (stack.peek() != '(') {
+				output += stack.pop() + " ";
+			} else {
+				stack.pop();
+			}
+		}
+		return output;
+	}
 	   
-	   public void gotOper(char opThis, int prec1) {
-	      while (!stack.isEmpty()) {
-	    	  if (stack.peek() != '(') {
-	    		  char c = stack.pop();
-	    		  if ((c == '+' || c == '-') && prec1 == 2) {
-		           	 stack.push(c);
-		           	 break;
-		           	 } else {
-		           		 output += c + " ";
-		           		 }
-	    		  } else {
-	    			  break;
-		         }
-	      }
-	      stack.push(opThis);
-	   }
+	public void gotOper(char opThis, int prec1) {
+		while (!stack.isEmpty()) {
+			if (stack.peek() != '(') {
+				char c = stack.pop();
+				if ((c == '+' || c == '-') && prec1 == 2) {
+					stack.push(c);
+					break;
+				} else {
+					output += c + " ";
+				}
+			} else {
+				break;
+			}
+		}
+		stack.push(opThis);
+	}
 	   
-	   public void gotParen() { 
-	      while (!stack.isEmpty()) {
-	         if (stack.peek() != '('){
-	        	 output += stack.pop() + " ";
-	         } else {
-	        	 stack.pop();
-	        	 break;
-	         }
-	      }
-	   }
+	public void gotParen() {
+		while (!stack.isEmpty()) {
+			if (stack.peek() != '('){
+				output += stack.pop() + " ";
+			} else {
+				stack.pop();
+				break;
+			}
+		}
+	}
 	
 //	public Operation parseString(String parse){
 //		
