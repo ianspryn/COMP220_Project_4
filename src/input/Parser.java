@@ -13,10 +13,10 @@ public class Parser {
 	//TEST TEXT INPUT
 	public static void main(String args[]) {
 		Scanner scnr = new Scanner(System.in);
-		while (true) {
+		//while (true) {
 			String parse = scnr.nextLine();
 			System.out.println(PostFix(parse.toLowerCase().replaceAll("\\s+","")));
-		}
+		//}
 		
 	}
 	
@@ -152,25 +152,36 @@ public class Parser {
 	public static String PostFix(String parse) {
 
 	    Stack<Character> stack = new Stack<Character>();
-	    StringBuilder postfix = new StringBuilder(parse.length());
-
+	    StringBuilder postFix = new StringBuilder(parse.length());
+	   
+	    
 	    for (int i = 0; i < parse.length(); i++) {
-	    	char c = parse.charAt(i);
-
-	        if (!isOperator(c)) {
-	            postfix.append(c);
-	        }
-
-	        else {
+	    	
+	    	char c;
+	    	
+	        if (!isOperator(parse.charAt(i))) {
+	        	for (int j = i; j < parse.length(); j++) {
+	        		if (!Character.isDigit(parse.charAt(j))) {
+	        			break;
+	        		}
+	        		postFix.append(parse.charAt(j));
+	        		i = j;
+	        	}
+//	        	while (Character.isDigit(parse.charAt(i)) && i < parse.length()) {
+//	        		postFix.append(parse.charAt(i));
+//	        		++i;	        		
+//	        	}
+	        	postFix.append(" ");
+	        } else {
+	         c = parse.charAt(i);
 	            if (c == ')') {
 	                while (!stack.isEmpty() && stack.peek() != '(') {
-	                    postfix.append(stack.pop());
+	                    postFix.append(stack.pop() + " ");
 	                }
 	                if (!stack.isEmpty()) {
 	                    stack.pop();
 	                }
-	            }
-	            else {
+	            } else {
 	                if (!stack.isEmpty() && !isLowerPrecedence(c, stack.peek())) {
 	                    stack.push(c);
 	                }
@@ -178,7 +189,7 @@ public class Parser {
 	                    while (!stack.isEmpty() && isLowerPrecedence(c, stack.peek())) {
 	                        char pop = stack.pop();
 	                        if (c != '(') {
-	                            postfix.append(pop);
+	                            //postFix.append(pop);
 	                        } else {
 	                          c = pop;
 	                        }
@@ -189,9 +200,9 @@ public class Parser {
 	        }
 	    }
 	    while (!stack.isEmpty()) {
-	      postfix.append(stack.pop());
+	      postFix.append(stack.pop());
 	    }
-	    return postfix.toString();
+	    return postFix.toString();
 	}
 	
 	private static boolean isOperator(char c) {
