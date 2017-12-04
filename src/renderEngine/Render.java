@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
+import physicsEngine.Engine;
 import physicsEngine.Particle;
 import physicsEngine.ParticleField;
 

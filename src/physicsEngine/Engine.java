@@ -62,14 +62,14 @@ public class Engine implements Runnable {
 	 */
 	
 	private void tick(){
-		ArrayList<Particle> field = ParticleField.getField();
-		for(Particle part : field){
-			part.y = Math.sin(part.time) * 100;
+		while(ParticleField.cycleAndIfHasNext()){
+			Particle part = ParticleField.getCurrentParticle();
+			part.y = Math.sin(part.time) * 300;
 			part.x = Math.cos(part.time) * part.y;
 			part.time += 0.01;
+			//Render.angle += 0.0000005;
 		}
-
-		Render.angle += 0.01;
 	}
+
 
 }
