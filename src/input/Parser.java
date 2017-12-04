@@ -41,9 +41,12 @@ public class Parser {
 		StringBuilder sb = new StringBuilder();
 		for (Character s : charParse) {
 		    sb.append(s);
-		}
+		}		
 		System.out.println(new Parser(sb.toString().toLowerCase()).doTrans());
 	}
+	
+	
+	
 	
 	/**
 	 * Add the multiplication (*) symbol before any opening parentheses for easier parsing
