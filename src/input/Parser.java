@@ -214,7 +214,7 @@ public class Parser {
 	            	 */	 
 	            	try {
 	            		if (parse.charAt(i + 1) == 'i' && parse.charAt(i + 2) == 'n') {
-	            			output += "sin ";
+	            			output += "s ";
 	            			i += 3;
 	            		} else {
 	            			throw new IllegalArgumentException("user probably misstyped \"sin\" or treated \"s\" as a variable");
@@ -232,7 +232,7 @@ public class Parser {
 	            	 */	 
 	            	try {
 	            		if (parse.charAt(i + 1) == 'o' && parse.charAt(i + 2) == 's') {
-	            			output += "cos ";
+	            			output += "c ";
 	            			i += 3;
 	            		} else {
 	            			throw new IllegalArgumentException("user probably misstyped \"cos\" or treated \"c\" as a variable");
@@ -251,7 +251,7 @@ public class Parser {
 	            	 */	            	
 	            	try {
 	            		if (parse.charAt(i + 1) == 'a' && parse.charAt(i + 2) == 'n') {
-	            			output += "tan ";
+	            			output += "a ";
 	            			i += 3;
 	            		} else {
 	            			throw new IllegalArgumentException("user probably misstyped \"tan\" or treated \"t\" as a variable");
