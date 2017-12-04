@@ -1,30 +1,14 @@
 package input;
 
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Stack;
 
 import operations.*;
 
 public class StringToOperation {
 	
 	public static Operation stringToOperation(String unpros){
-		/* PSUEDO
-		 * 
-		 * Do list of objects, not string
-		 * 
-		 * Constant X
-		 * Constant X
-		 * Constant X
-		 * Divide - USE PREVIOUS TWO X
-		 * Constant X
-		 * Constant X
-		 * Multiply - USE PREVIOUS TWO X
-		 * Add - USE PREVIOUS TWO X
-		 * ADD - USE PREVIOUS TWO (RETURN)
-		 * 
-		 * 
-		 */
-		ArrayList<Operation> opsLeft = new ArrayList<Operation>();
+		Stack<Operation> opsLeft = new Stack<Operation>();
 		
 		Scanner scnr = new Scanner(unpros);
 		while(scnr.hasNext()){
@@ -33,21 +17,15 @@ public class StringToOperation {
 			} else {
 				char op = scnr.next().charAt(0);
 				if(op == '+'){
-					opsLeft.add(new OperationAdd(opsLeft.get(opsLeft.size()-2), opsLeft.get(opsLeft.size()-1)));
-					opsLeft.remove(opsLeft.size() - 2);
-					opsLeft.remove(opsLeft.size() - 2);
+					opsLeft.add(new OperationAdd(opsLeft.pop(), opsLeft.pop()));
 				} else if(op == '-'){
-					opsLeft.add(new OperationSubtract(opsLeft.get(opsLeft.size()-2), opsLeft.get(opsLeft.size()-1)));
-					opsLeft.remove(opsLeft.size() - 2);
-					opsLeft.remove(opsLeft.size() - 2);
+					opsLeft.add(new OperationSubtract(opsLeft.pop(), opsLeft.pop()));
 				} else if(op == '*'){
-					opsLeft.add(new OperationMultiply(opsLeft.get(opsLeft.size()-2), opsLeft.get(opsLeft.size()-1)));
-					opsLeft.remove(opsLeft.size() - 2);
-					opsLeft.remove(opsLeft.size() - 2);
+					opsLeft.add(new OperationMultiply(opsLeft.pop(), opsLeft.pop()));
 				} else if(op == '/'){
-					opsLeft.add(new OperationDivide(opsLeft.get(opsLeft.size()-2), opsLeft.get(opsLeft.size()-1)));
-					opsLeft.remove(opsLeft.size() - 2);
-					opsLeft.remove(opsLeft.size() - 2);
+					opsLeft.add(new OperationDivide(opsLeft.pop(), opsLeft.pop()));
+				} else if(op == '^'){
+					opsLeft.add(new OperationPower(opsLeft.pop(), opsLeft.pop()));
 				}
 			}
 		}

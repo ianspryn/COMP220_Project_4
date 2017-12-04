@@ -4,7 +4,7 @@ public class OperationSubtract implements Operation {
 	
 	Operation a, b;
 	
-	public OperationSubtract(Operation a, Operation b){
+	public OperationSubtract(Operation b, Operation a){
 		this.a = a;
 		this.b = b;
 	}

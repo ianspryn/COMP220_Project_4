@@ -4,7 +4,7 @@ public class OperationPower implements Operation {
 
 	Operation a, b;
 	
-	public OperationPower(Operation a, Operation b){
+	public OperationPower(Operation b, Operation a){
 		this.a = a;
 		this.b = b;
 	}
