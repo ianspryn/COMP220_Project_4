@@ -37,6 +37,7 @@ public class Parser {
 		//Example: 2tanx becomes 2(tanx)
 		addMultiple(charParse);
 		
+		//Rebuild ArrayList of characters back into a string
 		StringBuilder sb = new StringBuilder();
 		for (Character s : charParse) {
 		    sb.append(s);
