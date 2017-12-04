@@ -106,21 +106,24 @@ public class Parser {
 	            	output += c + " ";
 	            	break;
 	            
+	            case '.':
+	            	output += c;
+	            	break;
+	            
 	            default:
 	            	if (Character.isDigit(parse.charAt(i))) {
 	            		for (int j = i; j < parse.length(); j++) {
-		            		if (!Character.isDigit(parse.charAt(j))) {
+		            		if (!Character.isDigit(parse.charAt(j)) && parse.charAt(j) != '.') {
 		            			break;
 			        		}
 		            		output += (parse.charAt(j));
 		            		i = j;
 		            	}
-		            	output += " ";
-		            	break;
 	            	} else {
 	            		throw new IllegalArgumentException("User entered an unsupported variable.");
 	            	}
-	            	
+	            	output += " ";
+	            	break;
 			}
 		}
 		

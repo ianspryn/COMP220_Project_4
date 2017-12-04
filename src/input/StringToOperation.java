@@ -27,7 +27,6 @@ public class StringToOperation {
 		ArrayList<Operation> opsLeft = new ArrayList<Operation>();
 		
 		Scanner scnr = new Scanner(unpros);
-		scnr.useDelimiter("");
 		while(scnr.hasNext()){
 			if(scnr.hasNextDouble()){
 				opsLeft.add(new OperationConstant(scnr.nextDouble()));

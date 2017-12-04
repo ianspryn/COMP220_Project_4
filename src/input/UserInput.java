@@ -35,9 +35,9 @@ public class UserInput {
 				//Check if user inputs invalid character(s), includes at least 1 variable, and there are no 2 operands in a row
 				//Example: Not allowed: underscore (_), percent (%), 2++x
 				//Example: INcludes a mathematical variable, like 2+x
-//				if (!isValidInput(charParse)) {
-//					throw new IllegalArgumentException("Invalid input");
-//				}
+				if (!isValidInput(charParse)) {
+					throw new IllegalArgumentException("Invalid input");
+				}
 				
 				//Add multiples before opening parentheses
 				//Example: 2(x) becomes 2*(x)
@@ -118,6 +118,7 @@ public class UserInput {
 		boolean isValid = true;
 		boolean containsVariable = false;
 		boolean balancedOperand = true;
+		boolean decimalSurrounded = true;
 		for (int i = 0; i < userText.size(); i++) {
 			char c = userText.get(i);
 			
@@ -142,17 +143,28 @@ public class UserInput {
             		// Example: 2+ or ^x
             		}
 			}
+			
+			//Check if decimal is followed by digit
+			try {
+				if (c == '.') {
+					decimalSurrounded = Character.isDigit(userText.get(i + 1)); 
+				}
+			} catch (IndexOutOfBoundsException e) {
+        		throw new IndexOutOfBoundsException("Did not balance decimal with operators");
+        		//If this code is reached, the user ended the function with a decimal
+        		//Example: x + 2.
+			}
 		}
-		return isValid && containsVariable && balancedOperand;
+		return isValid && containsVariable && balancedOperand && decimalSurrounded;
 	}
 	
 	/**
-	 * Check if a character is a character supported,in a function, which includes a - z, 0 - 9, and operands.
+	 * Check if a character is a character supported,in a function, which includes a - z, 0 - 9, operands, and decimals.
 	 * @param c
 	 * @return true or false if a character is a function character
 	 */
 	public static boolean isFunctionCharacter (char c) {
-		return (Character.isDigit(c) || Character.isAlphabetic(c) || isOperand(c));
+		return (Character.isDigit(c) || Character.isAlphabetic(c) || isOperand(c)) || c == '.';
 	}
 	
 	/**
