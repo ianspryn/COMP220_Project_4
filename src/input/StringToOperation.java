@@ -26,6 +26,8 @@ public class StringToOperation {
 					opsLeft.add(new OperationDivide(opsLeft.pop(), opsLeft.pop()));
 				} else if(op == '^'){
 					opsLeft.add(new OperationPower(opsLeft.pop(), opsLeft.pop()));
+				} else if(op == 'p'){
+					opsLeft.add(new OperationConstant(Math.PI));
 				}
 			}
 		}
