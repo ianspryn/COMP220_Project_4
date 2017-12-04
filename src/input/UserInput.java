@@ -33,7 +33,10 @@ public class UserInput {
 		addMultiple(charParse);
 		
 		//Convert user input of something like |x| to abs(x)
-		convertForm(charParse);
+		convertAbs(charParse);
+		
+		//Convert pi to p
+		convertPi(charParse);
 		
 		//Check if parentheses are balanced in user input. If not, throw an exception
 		if (!isBalanced(charParse)) {
@@ -79,7 +82,8 @@ public class UserInput {
 			char c = userText.get(i);
 			//If it is a variable, or first letter of sin, cos, tan, pi, or e
 			if(c == '(' || isVariable(c) || c == 's' || c == 'c' || c == 't' || c == 'p' || c == 'e') {
-				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1))) && userText.get(i - 1) != 'r') {
+				//Check for certain cases, including if the previous letter is 'r' in "sqrt" or 'o' in "cos"
+				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1))) && userText.get(i - 1) != 'r' && userText.get(i - 1) != 'o') {
 					userText.add(i, '*'); 
 					i++;	
 				}
@@ -103,7 +107,10 @@ public class UserInput {
 	 * @param userText
 	 * @return an ArrayList with the newly formatted absolute value and pi symbols
 	 */
-	public static ArrayList<Character> convertForm (ArrayList<Character> userText) {
+	public static ArrayList<Character> convertAbs (ArrayList<Character> userText) {
+		if (userText.contains('|')) {
+			return userText;
+		}
 		int isOpeningBar = -1;
 		int i = 0;
 		while (i < userText.size()) {
@@ -117,17 +124,25 @@ public class UserInput {
 					userText.set(i, ']');
 				}
 			}
+			i++;
+		}
+		return userText;
+	}
+	
+	public static ArrayList<Character> convertPi(ArrayList<Character> userText) {
+		int i = 0;
+		while (i < userText.size()) {
+			char c = userText.get(i);
 			if (userText.get(i) == 'p') {
 				try {
-            		if (userText.get(i + 1) == 'i') {
-            			userText.remove(i + 1);
-            		} else {
-            			throw new IllegalArgumentException("user probably misstyped \"pi\" or treated \"p\" as a variable");
-            		}
-            	} catch (StringIndexOutOfBoundsException e) {
-            		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
-            		}
-            	break;
+					if (userText.get(i + 1) == 'i') {
+						userText.remove(i + 1);
+					} else {
+						throw new IllegalArgumentException("user probably misstyped \"pi\" or treated \"p\" as a variable");
+					}
+				} catch (StringIndexOutOfBoundsException e) {
+					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+				}
 			}
 			i++;
 		}
@@ -141,7 +156,6 @@ public class UserInput {
 	 * @throws IOException
 	 */
 	public static boolean isBalanced(ArrayList<Character> userText) throws IOException {
-		
 		Stack<Character> stack = new Stack<Character>();
 		
 		char c;
