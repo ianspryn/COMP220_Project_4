@@ -45,70 +45,12 @@ public class Parser {
 	            	gotParen();
 	            	break;
 	            	
-	            case '|':
-	            	
-	            
-	            //Potentially a sine or sqrt function
-	            case 's':
-	            	/*
-	            	 * The try catch statement is a safe guard so that if the user enters the character 's' and intended
-	            	 * it to be a variable, the program will still fail gracefully
-	            	 */	 
-	            	try {
-	            		if (parse.charAt(i + 1) == 'i' && parse.charAt(i + 2) == 'n') {
-	            			output += "i ";
-	            			i += 3;
-	            		} else if (parse.charAt(i + 1) == 'q' && parse.charAt(i + 2) == 'r' && parse.charAt(i + 3) == 't') {
-	            			output += "s ";
-	            			i += 4;
-	            		} else {
-	            			throw new IllegalArgumentException("user probably misstyped \"sin\" or \"sqrt\" or treated \"s\" as a variable");
-	            		}
-	            	} catch (StringIndexOutOfBoundsException e) {
-	            		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
-	            		}
-	            	break;
-	            
-	            //Potentially a cosine function
-	            case 'c':
-	            	/*
-	            	 * The try catch statement is a safe guard so that if the user enters the character 'c' and intended
-	            	 * it to be a variable, the program will still fail gracefully
-	            	 */	 
-	            	try {
-	            		if (parse.charAt(i + 1) == 'o' && parse.charAt(i + 2) == 's') {
-	            			output += "c ";
-	            			i += 3;
-	            		} else {
-	            			throw new IllegalArgumentException("user probably misstyped \"cos\" or treated \"c\" as a variable");
-	            		}
-	            	} catch (StringIndexOutOfBoundsException e) {
-	            		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
-	            		}
-	            		
-	            	break;
-	            	
-	            //Potentially a tangent function
-	            case 't':
-	            	/*
-	            	 * The try catch statement is a safe guard so that if the user enters the character 't' and intended
-	            	 * it to be a variable, the program will still fail gracefully
-	            	 */	            	
-	            	try {
-	            		if (parse.charAt(i + 1) == 'a' && parse.charAt(i + 2) == 'n') {
-	            			output += "a ";
-	            			i += 3;
-	            		} else {
-	            			throw new IllegalArgumentException("user probably misstyped \"tan\" or treated \"t\" as a variable");
-	            		}
-	            	} catch (StringIndexOutOfBoundsException e) {
-	            		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
-	            		}
-	            	break;
-	            
 	            case 'a': //absolute value
+	            case 'c': //cos
 	            case 'e': //Euler's number
 	            case 'p': //pi
+	            case 's': //sin
+	            case 't': //tan
 	            case 'x':
 	            case 'y':
 	            case 'z':

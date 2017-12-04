@@ -27,16 +27,32 @@ public class UserInput {
 //		
 //		System.out.println("Please enter your function");
 		
-		//Add multiples before opening parentheses
-		//Example: 2(x) becomes 2*(x)
-		//Example: 2tanx becomes 2(tanx)
-		addMultiple(charParse);
+		//Add parentheses around first operator after trigonometric function
+		//Example: sinx2 becomes sin(x)2
+		if (charParse.size() > 2) {
+			//If it is not greater than 2, then it is guaranteed there is no trigonometric function in the user input
+			addTrigParentheses(charParse);
+		}
 		
-		//Convert user input of something like |x| to abs(x)
+		
+		
+		//Convert user input containing absolutely value of something like |x| to a(x)
 		convertAbs(charParse);
 		
 		//Convert pi to p
 		convertPi(charParse);
+		
+		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
+		convertNames(charParse);
+		
+		//Add multiples before opening parentheses
+		//Example: 2(x) becomes 2*(x)
+		//Example: 2tanx becomes 2(tanx)
+		if (charParse.size() > 1) {
+			//If it is not greater than 1, then it is guaranteed there is no multiples that is applicable
+			addMultiple(charParse);
+		}
+		
 		
 		//Check if parentheses are balanced in user input. If not, throw an exception
 		if (!isBalanced(charParse)) {
@@ -47,6 +63,7 @@ public class UserInput {
 			Collections.replaceAll(charParse, ']', ')');
 		}
 		
+		//TODO: UNCOMMENT THIS CODE
 //		Check if user inputs invalid character(s), includes at least 1 variable, and there are no 2 operands in a row
 //		Example: Not allowed: underscore (_), percent (%), 2++x
 //		Example: Includes a mathematical variable, like 2+x
@@ -68,6 +85,20 @@ public class UserInput {
 		
 	}
 	
+	public static ArrayList<Character> addTrigParentheses (ArrayList<Character> userText) {
+		
+		int i = 2;
+		while (i < userText.size()) {
+			char c = userText.get(i);
+			if ((c == 'n' || c == 's') && userText.get(i + 1) != 'q' && userText.get(i + 1) != '(') {
+				userText.add(i + 1, '(');
+				userText.add(i + 3, ')');
+			}
+			i++;
+		}
+		return userText;
+	}
+	
 	/**
 	 * Add the multiplication (*) symbol before any opening parentheses, variables, trigonometric functions, and constants for easier parsing
 	 * @param userText
@@ -80,18 +111,25 @@ public class UserInput {
 		//in adding a * symbol at the beginning
 		while (i < userText.size()) {
 			char c = userText.get(i);
-			//If it is a variable, or first letter of sin, cos, tan, pi, or e
-			if(c == '(' || isVariable(c) || c == 's' || c == 'c' || c == 't' || c == 'p' || c == 'e') {
-				//Check for certain cases, including if the previous letter is 'r' in "sqrt" or 'o' in "cos"
-				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1))) && userText.get(i - 1) != 'r' && userText.get(i - 1) != 'o') {
+			//If it is a variable, or first letter of sin, cos, tan, sqrt, pi, or e
+			if(c == '(' || isVariable(c) || c == 'i' || c == 'c' || c == 't' || c == 's' || c == 'p' || c == 'e') {
+				//Make sure the character before the current position is a number or a letter and that it is not a trigonometric function or a square root function
+				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1)))
+						&& userText.get(i - 1) != 'i' && userText.get(i - 1) != 'c' && userText.get(i - 1) != 'a' && userText.get(i - 1) != 's') {
 					userText.add(i, '*'); 
 					i++;	
 				}
 			}
 			//if it is a variable, a digit, or first letter of sin, cos, tan, or 
-			if ((isVariable(c) || Character.isDigit(c) || c == 's' || c == 'c' || c == 't' || c== 'p')
+			if ((isVariable(c) || Character.isDigit(c) || c == 'i' || c == 'c' || c == 'a' || c== 'p' || c == 'e')
 					&& (userText.get(i - 1) == ')' || userText.get(i - 1) == 'i' || userText.get(i - 1) == 'e')) {
 				userText.add(i, '*');
+				i++;
+			}
+			//if it is digit and the position before is a variable, a pi constant, or an e constant, add a multiplication symbol between
+			if (Character.isDigit(c) && (isVariable(userText.get(i - 1)) || userText.get(i - 1) == 'p' || userText.get(i - 1) == 'e')) {
+				userText.add(i, '*');
+				i++;
 			}
 			i++;
 		}
@@ -129,7 +167,7 @@ public class UserInput {
 		return userText;
 	}
 	
-	public static ArrayList<Character> convertPi(ArrayList<Character> userText) {
+	public static ArrayList<Character> convertPi (ArrayList<Character> userText) {
 		int i = 0;
 		while (i < userText.size()) {
 			char c = userText.get(i);
@@ -144,6 +182,76 @@ public class UserInput {
 					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
 				}
 			}
+			i++;
+		}
+		return userText;
+	}
+	
+	public static ArrayList<Character> convertNames (ArrayList<Character> userText) {
+		int i = 0;
+		while (i < userText.size()) {
+			char c = userText.get(i);
+			//Potentially a sine or sqrt function
+	       if (c == 's') {
+	        	/*
+	        	 * The try catch statement is a safe guard so that if the user enters the character 's' and intended
+	        	 * it to be a variable, the program will still fail gracefully
+	        	 */	 
+	        	try {
+	        		if (userText.get(i + 1) == 'i' && userText.get(i + 2) == 'n') {
+	        			//remove the "in" in "sin"
+	        			userText.remove(i+1);
+	        			userText.remove(i+1);
+	        		} else if (userText.get(i + 1) == 'q' && userText.get(i + 2) == 'r' && userText.get(i + 3) == 't') {
+	        			//remove the "in" in "sin"
+	        			userText.remove(i+1);
+	        			userText.remove(i+1);
+	        			userText.remove(i+1);
+	        		} else {
+	        			throw new IllegalArgumentException("user probably misstyped \"sin\" or \"sqrt\" or treated \"s\" as a variable");
+	        		}
+	        	} catch (StringIndexOutOfBoundsException e) {
+	        		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+	        		}
+			}
+	        //Potentially a cosine function
+	        if (c == 'c') {
+	        	/*
+	        	 * The try catch statement is a safe guard so that if the user enters the character 'c' and intended
+	        	 * it to be a variable, the program will still fail gracefully
+	        	 */	 
+	        	try {
+	        		if (userText.get(i + 1) == 'o' && userText.get(i + 2) == 's') {
+	        			//remove the "os" in "cos"
+	        			userText.remove(i+1);
+	        			userText.remove(i+1);
+	        		} else {
+	        			throw new IllegalArgumentException("user probably misstyped \"cos\" or treated \"c\" as a variable");
+	        		}
+	        	} catch (StringIndexOutOfBoundsException e) {
+	        		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+	        		}
+	        		
+	        }
+	        	
+	        //Potentially a tangent function
+	        if (c == 't') {
+	        	/*
+	        	 * The try catch statement is a safe guard so that if the user enters the character 't' and intended
+	        	 * it to be a variable, the program will still fail gracefully
+	        	 */	            	
+	        	try {
+	        		if (userText.get(i + 1) == 'a' && userText.get(i + 2) == 'n') {
+	        			//remove the "an" in "tan"
+	        			userText.remove(i+1);
+	        			userText.remove(i+1);
+	        		} else {
+	        			throw new IllegalArgumentException("user probably misstyped \"tan\" or treated \"t\" as a variable");
+	        		}
+	        	} catch (StringIndexOutOfBoundsException e) {
+	        		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+	        		}
+	        }
 			i++;
 		}
 		return userText;
