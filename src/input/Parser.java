@@ -17,7 +17,7 @@ public class Parser {
 	// TODO: Remove main method
 	public static void main(String[] args) throws IOException {
 		Scanner scnr = new Scanner(System.in);
-		
+				
 		//take the user input as a string, remove all spaces from it, and convert it to an ArrayList of characters
 		ArrayList<Character> charParse = new ArrayList<Character>(scnr.nextLine().replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
 		
@@ -42,7 +42,10 @@ public class Parser {
 		for (Character s : charParse) {
 		    sb.append(s);
 		}		
-		System.out.println(new Parser(sb.toString().toLowerCase()).doTrans());
+		String parsed = new Parser(sb.toString().toLowerCase()).doTrans();
+		System.out.println(parsed);
+		Operation op = StringToOperation.stringToOperation(parsed);
+		System.out.println(op.operate());
 	}
 	
 	
