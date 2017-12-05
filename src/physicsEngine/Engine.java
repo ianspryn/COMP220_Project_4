@@ -2,11 +2,14 @@ package physicsEngine;
 
 import java.util.ArrayList;
 
+import operations.Operation;
 import renderEngine.Render;
 
 public class Engine implements Runnable {
 	
 	private boolean running = true;
+	public static double timeIncrement;
+	public static Operation x, y, z;
 	
 	public Engine(){
 		//TODO: Should have input from parameter, or move this step somewhere else
@@ -64,10 +67,10 @@ public class Engine implements Runnable {
 	private void tick(){
 		while(ParticleField.cycleAndIfHasNext()){
 			Particle part = ParticleField.getCurrentParticle();
-			part.y = Math.sin(part.time) * 300;
-			part.x = Math.cos(part.time) * part.y;
-			part.time += 0.01;
-			//Render.angle += 0.0000005;
+			part.x = x.operate();
+			part.y = y.operate();
+			part.z = z.operate();
+			part.time += timeIncrement;
 		}
 	}
 

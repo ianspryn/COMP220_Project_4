@@ -15,6 +15,7 @@ public class Render {
 	private static BufferStrategy bs;
 	private static Graphics g;
 	public static double angle = Math.PI/4;
+	public static boolean rotateGraph = false;
 	
 	/**
 	 * The main method doing all of the rendering set to 60 FPS.
@@ -24,6 +25,10 @@ public class Render {
 	 */
 	
 	public static void mainRender(Canvas canvas){
+		if(rotateGraph){
+			angle += 0.01;
+		}
+		
 		bs = canvas.getBufferStrategy();
 		if(bs == null){
 			canvas.createBufferStrategy(2);

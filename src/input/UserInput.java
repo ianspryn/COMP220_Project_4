@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import operations.Operation;
 import physicsEngine.Engine;
 import renderEngine.Display;
+import renderEngine.Render;
 
 public class UserInput {
 	
@@ -20,13 +21,34 @@ public class UserInput {
 
 		Scanner scnr = new Scanner(System.in);
 		
-//		System.out.println("Please enter your function");
-		//take the user input as a string, remove all spaces from it, and convert it to an ArrayList of characters
+		System.out.println("Would you like to rotate the graph as it is rendered? (yes/no)");
 		
-		System.out.print(Parser.translate(scnr.nextLine()));
+		String input = scnr.nextLine().toLowerCase();
+		if(input.equals("yes") || input.equals("y")){
+			Render.rotateGraph = true;
+		}
+		
+		System.out.println("Enter time increment.");
+		Engine.timeIncrement = scnr.nextDouble();
+		scnr.nextLine();
+		
+		System.out.println("Enter the x. Available variables: time, x.");
+		Engine.x = Parser.translate(scnr.nextLine());
+		System.out.println("Enter the y. Available variables: time, y, x.");
+		Engine.y = Parser.translate(scnr.nextLine());
+		System.out.println("Enter the z. Available variables: time, z, y, x.");
+		Engine.z = Parser.translate(scnr.nextLine());
+		
+		scnr.close();
+		
+		Thread engine = new Thread(new Engine());
+		engine.start();
+		Thread render = new Thread(new Display());
+		render.start();
 		
 	}
 	
-	
+
+	//OOPS: take the user input as a string, remove all spaces from it, and convert it to an ArrayList of characters
 
 }
