@@ -25,7 +25,7 @@ public class Parser {
 		output = "";
 		convertRand(charParse);
 
-		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
+		//sin --> i, cos --> c, tan --> a, sqrt --> s,
 		convertTrig(charParse);
 		
 		//Convert pi to p
@@ -37,17 +37,14 @@ public class Parser {
 		
 		//Add multiples before opening parentheses
 		//Example: 2(x) becomes 2*(x)
-		//Example: 2tanx becomes 2(tanx)
+		//Example: 2tan(x) becomes 2*tan(x)
+		//Example: 2piy becomes 2*pi*y
 		if (charParse.size() > 1) {
 			//If it is not greater than 1, then it is guaranteed there is no multiples that is applicable
 			addMultiple(charParse);
 		}
 		
-		//Move the trigonometric type and or the square root to the end of the parentheses
-		//Example: sin(x + 2) becomes (x + 2)sin
-		//Example: sqrt(y) becomes (y)sqrt
-		translateFormat(charParse);
-		//Convert user input containing absolutely value of something like |x| to a(x)
+		//Convert user input containing absolutely value of something like |x| to a[x]
 		convertAbs(charParse);
 		
 		//Check if parentheses are balanced in user input. If not, throw an exception
@@ -58,6 +55,11 @@ public class Parser {
 			Collections.replaceAll(charParse, '[', '(');
 			Collections.replaceAll(charParse, ']', ')');
 		}
+		
+		//Move the trigonometric type, square root or absolutely value to the end of the parentheses
+		//Example: sin(x + 2) becomes (x + 2)sin
+		//Example: sqrt(y) becomes (y)sqrt
+		translateFormat(charParse);
 		
 		//Check if user inputs invalid character(s), includes at least 1 variable, and there are no 2 operands in a row
 		//Example: Not allowed: underscore (_), percent (%), 2++x
@@ -239,7 +241,7 @@ public class Parser {
 	 * @return an ArrayList with the newly formatted absolute value
 	 */
 	public static ArrayList<Character> convertAbs (ArrayList<Character> userText) {
-		if (userText.contains('|')) {
+		if (!userText.contains('|')) {
 			return userText;
 		}
 		int isOpeningBar = -1;
