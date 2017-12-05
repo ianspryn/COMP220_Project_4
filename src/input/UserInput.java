@@ -104,16 +104,16 @@ public class UserInput {
 		while (i < userText.size()) {
 			char c = userText.get(i);
 			//If it is a variable, or first letter of sin, cos, tan, sqrt, pi, or e
-			if(c == '(' || isVariable(c) || c == 'i' || c == 'c' || c == 't' || c == 's' || c == 'p' || c == 'e') {
+			if(c == '(' || isVariable(c) || c == 'i' || c == 'c' || c == 'n' || c == 's' || c == 'p' || c == 'e') {
 				//Make sure the character before the current position is a number or a letter and that it is not a trigonometric function or a square root function
 				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1)))
-						&& userText.get(i - 1) != 'i' && userText.get(i - 1) != 'c' && userText.get(i - 1) != 'a' && userText.get(i - 1) != 's') {
+						&& userText.get(i - 1) != 'i' && userText.get(i - 1) != 'c' && userText.get(i - 1) != 'n' && userText.get(i - 1) != 'a' && userText.get(i - 1) != 's') {
 					userText.add(i, '*'); 
 					i++;	
 				}
 			}
-			//if it is a variable, a digit, or first letter of sin, cos, tan, or 
-			if ((isVariable(c) || Character.isDigit(c) || c == 'i' || c == 'c' || c == 'a' || c== 'p' || c == 'e')
+			//if it is a variable, a digit, or first letter of sin, cos, tan, absolute value, pi, or e
+			if ((isVariable(c) || Character.isDigit(c) || c == 'i' || c == 'c' || c == 'n' || c == 'a' || c== 'p' || c == 'e')
 					&& (userText.get(i - 1) == ')' || userText.get(i - 1) == 'i' || userText.get(i - 1) == 'e')) {
 				userText.add(i, '*');
 				i++;
@@ -203,11 +203,11 @@ public class UserInput {
 	        	 */	 
 	        	try {
 	        		if (userText.get(i + 1) == 'i' && userText.get(i + 2) == 'n') {
-	        			//remove the "in" in "sin"
-	        			userText.remove(i+1);
+	        			//remove the 's' and 'n' in "sin"
+	        			userText.remove(i);
 	        			userText.remove(i+1);
 	        		} else if (userText.get(i + 1) == 'q' && userText.get(i + 2) == 'r' && userText.get(i + 3) == 't') {
-	        			//remove the "in" in "sin"
+	        			//remove the "qrt" in "sqrt"
 	        			userText.remove(i+1);
 	        			userText.remove(i+1);
 	        			userText.remove(i+1);
@@ -227,8 +227,8 @@ public class UserInput {
 	        	try {
 	        		if (userText.get(i + 1) == 'o' && userText.get(i + 2) == 's') {
 	        			//remove the "os" in "cos"
-	        			userText.remove(i+1);
-	        			userText.remove(i+1);
+	        			userText.remove(i + 1);
+	        			userText.remove(i + 1);
 	        		} else {
 	        			throw new IllegalArgumentException("user probably misstyped \"cos\" or treated \"c\" as a variable");
 	        		}
@@ -247,8 +247,8 @@ public class UserInput {
 	        	try {
 	        		if (userText.get(i + 1) == 'a' && userText.get(i + 2) == 'n') {
 	        			//remove the "an" in "tan"
-	        			userText.remove(i+1);
-	        			userText.remove(i+1);
+	        			userText.remove(i);
+	        			userText.remove(i);
 	        		} else {
 	        			throw new IllegalArgumentException("user probably misstyped \"tan\" or treated \"t\" as a variable");
 	        		}

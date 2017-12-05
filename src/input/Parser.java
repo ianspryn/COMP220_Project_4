@@ -49,8 +49,9 @@ public class Parser {
 	            case 'c': //cos
 	            case 'e': //Euler's number
 	            case 'p': //pi
-	            case 's': //sin
-	            case 't': //tan
+	            case 'i': //sin
+	            case 'n': //tan
+	            case 's': //sqrt
 	            case 'x':
 	            case 'y':
 	            case 'z':
