@@ -396,19 +396,21 @@ public class Parser {
 	        	}
 	        }
 	        	
-	        //Potentially a tangent function
+	        //Potentially the end tangent function
+	        //We don't check beginning because we use t as a variable for time
 	        if (c == 'n') {
 	        	/*
 	        	 * The try catch statement is a safe guard so that if the user enters the character 't' and intended
 	        	 * it to be a variable, the program will still fail gracefully
 	        	 */	            	
 	        	try {
-	        		if (userText.get(i + 1) == 'a' && userText.get(i + 2) == 'n') {
-	        			//remove the "an" in "tan"
+	        		if (userText.get(i - 1) == 'a' && userText.get(i - 2) == 't') {
+	        			//remove the "ta" in "tan"
 	        			userText.remove(i);
-	        			userText.remove(i);
+	        			userText.remove(i - 2);
+	        			i++;
 	        		} else {
-	        			throw new IllegalArgumentException("user probably misstyped \"tan\" or treated \"t\" as a variable");
+	        			throw new IllegalArgumentException("user probably misstyped \"tan\"");
 	        		}
 	        	} catch (IndexOutOfBoundsException e) {
 	        		throw new IndexOutOfBoundsException("User entered invalid variable character");
@@ -420,7 +422,7 @@ public class Parser {
 	}
 	
 	/**
-	 * Verify a trig has a parenthesis after it.
+	 * Verify a trig or sqrt function has a parenthesis after it.
 	 * @param userText
 	 * @return if a trig has a parenthesis after it.
 	 * @throws IOException
@@ -431,7 +433,7 @@ public class Parser {
 				char c = userText.get(i);
 				if (c == 'i' || c == 'c' || c == 'n' || c == 's') {
 					if (userText.get(i + 1) != '(') {
-						throw new IllegalArgumentException("Include parentheses with trigonometric function");
+						throw new IllegalArgumentException("Include parentheses with trigonometric and/or square root function");
 					}
 				}
 			}
