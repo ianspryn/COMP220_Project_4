@@ -8,13 +8,7 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-import operations.Operation;
-import operations.OperationAdd;
-import operations.OperationConstant;
-import operations.OperationDivide;
-import operations.OperationMultiply;
-import operations.OperationPower;
-import operations.OperationSubtract;
+import operations.*;
 
 public class Parser {
 	
@@ -30,21 +24,17 @@ public class Parser {
 		//time
 		//rotation
 		
-		//Add parentheses around first operator after trigonometric function
-		//Example: sinx2 becomes sin(x)2
-		if (charParse.size() > 2) {
-			//If it is not greater than 2, then it is guaranteed there is no trigonometric function in the user input
-			addTrigParentheses(charParse);
-		}
-		
-		//Convert user input containing absolutely value of something like |x| to a(x)
-		convertAbs(charParse);
+		convertRand(charParse);
+
+		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
+		convertTrig(charParse);
 		
 		//Convert pi to p
 		convertPi(charParse);
 		
-		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
-		convertTrig(charParse);
+		//Verify each trigonometric function has parentheses after it
+		//Example: sin(x) is allowed but sinx is not
+		verifyTrig(charParse);
 		
 		//Add multiples before opening parentheses
 		//Example: 2(x) becomes 2*(x)
@@ -53,6 +43,13 @@ public class Parser {
 			//If it is not greater than 1, then it is guaranteed there is no multiples that is applicable
 			addMultiple(charParse);
 		}
+		
+		//Move the trigonometric type and or the square root to the end of the parentheses
+		//Example: sin(x + 2) becomes (x + 2)sin
+		//Example: sqrt(y) becomes (y)sqrt
+		translateTrigOrSquare(charParse);
+		//Convert user input containing absolutely value of something like |x| to a(x)
+		convertAbs(charParse);
 		
 		//Check if parentheses are balanced in user input. If not, throw an exception
 		if (!isBalanced(charParse)) {
@@ -112,7 +109,9 @@ public class Parser {
 	            case 'p': //pi
 	            case 'i': //sin
 	            case 'n': //tan
+	            case 'r': //random
 	            case 's': //sqrt
+	            case 't': //time
 	            case 'x':
 	            case 'y':
 	            case 'z':
@@ -121,6 +120,9 @@ public class Parser {
 	            	
 	            case '.':
 	            	output += c;
+	            	break;
+	            	
+	            case ' ':
 	            	break;
 	            
 	            default:
@@ -176,20 +178,6 @@ public class Parser {
 				break;
 			}
 		}
-	}
-	
-public static ArrayList<Character> addTrigParentheses (ArrayList<Character> userText) {
-		
-		int i = 2;
-		while (i < userText.size()) {
-			char c = userText.get(i);
-			if ((c == 'n' || c == 's') && userText.get(i + 1) != 'q' && userText.get(i + 1) != '(') {
-				userText.add(i + 1, '(');
-				userText.add(i + 3, ')');
-			}
-			i++;
-		}
-		return userText;
 	}
 	
 	/**
@@ -269,12 +257,63 @@ public static ArrayList<Character> addTrigParentheses (ArrayList<Character> user
 		int i = 0;
 		while (i < userText.size()) {
 			char c = userText.get(i);
-			if (userText.get(i) == 'p') {
+			if (c == 'p') {
 				try {
 					if (userText.get(i + 1) == 'i') {
 						userText.remove(i + 1);
 					} else {
 						throw new IllegalArgumentException("user probably misstyped \"pi\" or treated \"p\" as a variable");
+					}
+				} catch (StringIndexOutOfBoundsException e) {
+					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+				}
+			}
+			i++;
+		}
+		return userText;
+	}
+	
+	public static ArrayList<Character> convertRand (ArrayList<Character> userText) {
+		int i = 0;
+		while (i < userText.size()) {
+			if (userText.get(i) == 'r') {
+				try {
+					//if the next letter is not t, then that confirms we are not confusing "sqrt" with "rand"
+					if (userText.get(i + 1) != 't') {
+						if (userText.get(i + 1) == 'a' && userText.get(i + 2) == 'n' && userText.get(i + 3) == 'd') {
+							userText.remove(i);
+							userText.remove(i);
+							userText.remove(i);
+							userText.remove(i);
+							if (userText.get(i) == '(') {
+								userText.remove(i);
+								if (Character.isDigit(userText.get(i))) {
+									i++;
+									boolean foundCloseParenthesis = false;
+									while (!foundCloseParenthesis) {
+										if (Character.isDigit(userText.get(i))) {
+											i++;
+										}
+										if (userText.get(i) == ',') {
+											userText.set(i, ' ');
+											i++;
+										}
+										if (userText.get(i) == ' ') {
+											i++;
+										}
+										if (userText.get(i) == ')') {
+											foundCloseParenthesis = true;
+											userText.set(i, ' ');
+											i++;
+										}
+									}
+								}
+							}
+							userText.add(i, 'r');
+							// userText.add(i, ' ');
+						} else {
+							throw new IllegalArgumentException("User did not format the random value properly");
+						}
 					}
 				} catch (StringIndexOutOfBoundsException e) {
 					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
@@ -362,6 +401,47 @@ public static ArrayList<Character> addTrigParentheses (ArrayList<Character> user
 		return userText;
 	}
 	
+	public static boolean verifyTrig(ArrayList<Character> userText) throws IOException {
+		try {
+			for (int i = 0; i < userText.size(); i++) {
+				char c = userText.get(i);
+				if (c == 'i' || c == 'c' || c == 'n' || c == 's') {
+					if (userText.get(i + 1) != '(') {
+						throw new IllegalArgumentException("Include parentheses with trigonometric function");
+					}
+				}
+			}
+		} catch (StringIndexOutOfBoundsException e) {
+    		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+    		}
+		return true;
+	}
+	
+	public static ArrayList<Character> translateTrigOrSquare (ArrayList<Character> userText) {
+		Stack<Character> stack = new Stack<Character>();
+		try {
+			int i = 0;
+			while (i < userText.size()) {
+				char c = userText.get(i);
+				if (c == 'i' || c == 'c' || c == 'n' || c == 's') {
+					stack.push(userText.remove(i));
+					}
+				while (!stack.isEmpty()) {
+					if (c == ')') {
+						userText.add(i + 1, stack.pop());
+						i++;
+					} else {
+						break;
+					}
+				}
+				i++;
+			}			
+		} catch (StringIndexOutOfBoundsException e) {
+    		throw new StringIndexOutOfBoundsException("Could not properly format trigonometric function(s)");
+    		}
+		return userText;
+	}
+	
 	/**
 	 * Checks if the function contains a balanced set of parentheses
 	 * @param userText
@@ -408,9 +488,9 @@ public static ArrayList<Character> addTrigParentheses (ArrayList<Character> user
 	 */
 	public static boolean isValidInput(ArrayList<Character> userText) {
 		boolean isValid = true;
-		boolean containsVariable = false;
 		boolean balancedOperand = true;
 		boolean decimalSurrounded = true;
+		boolean properTrigorSquare = true;
 		for (int i = 0; i < userText.size(); i++) {
 			char c = userText.get(i);
 			
@@ -418,10 +498,6 @@ public static ArrayList<Character> addTrigParentheses (ArrayList<Character> user
 			if (!isFunctionCharacter(c)) {
 				isValid = false;
 				break;
-			}
-			//Verifies that at least 1 variables exists in the function 
-			if (isVariable(c)) {
-				containsVariable = true;
 			}
 			//Checks if there is 2 operands in a row, EXCLUDING parentheses and of operand was not surrounded with operators
 			if (isOperandNotParenthesis(c)) {
@@ -447,7 +523,7 @@ public static ArrayList<Character> addTrigParentheses (ArrayList<Character> user
         		//Example: x + 2.
 			}
 		}
-		return isValid && containsVariable && balancedOperand && decimalSurrounded;
+		return isValid && balancedOperand && decimalSurrounded;
 	}
 	
 	/**
@@ -497,18 +573,20 @@ public static ArrayList<Character> addTrigParentheses (ArrayList<Character> user
 				opsLeft.add(new OperationConstant(scnr.nextDouble()));
 			} else {
 				char op = scnr.next().charAt(0);
-				if(op == '+'){
+				if(op == '+') {
 					opsLeft.add(new OperationAdd(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '-'){
+				} else if (op == '-') {
 					opsLeft.add(new OperationSubtract(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '*'){
+				} else if (op == '*') {
 					opsLeft.add(new OperationMultiply(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '/'){
+				} else if (op == '/') {
 					opsLeft.add(new OperationDivide(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '^'){
+				} else if (op == '^') {
 					opsLeft.add(new OperationPower(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == 'p'){
+				} else if (op == 'p') {
 					opsLeft.add(new OperationConstant(Math.PI));
+				} else if (op == 'e') {
+					opsLeft.add(new OperationConstant(Math.E));
 				}
 			}
 		}
