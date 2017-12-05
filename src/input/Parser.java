@@ -76,6 +76,7 @@ public class Parser {
 		for (Character s : charParse) {
 		    sb.append(s);
 		}		
+		System.out.println(translateToPostfix(sb.toString().toLowerCase()));
 		return stringToOperation(translateToPostfix(sb.toString().toLowerCase()));
 		
 	}
