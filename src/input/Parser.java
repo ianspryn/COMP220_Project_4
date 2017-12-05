@@ -276,8 +276,8 @@ public class Parser {
 					} else {
 						throw new IllegalArgumentException("user probably misstyped \"pi\" or treated \"p\" as a variable");
 					}
-				} catch (StringIndexOutOfBoundsException e) {
-					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+				} catch (IndexOutOfBoundsException e) {
+					throw new IndexOutOfBoundsException("User entered invalid variable character");
 				}
 			}
 			i++;
@@ -332,8 +332,8 @@ public class Parser {
 							throw new IllegalArgumentException("User did not format the random value properly");
 						}
 					}
-				} catch (StringIndexOutOfBoundsException e) {
-					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+				} catch (IndexOutOfBoundsException e) {
+					throw new IndexOutOfBoundsException("User entered invalid variable character");
 				}
 			}
 			i++;
@@ -437,8 +437,8 @@ public class Parser {
 					}
 				}
 			}
-		} catch (StringIndexOutOfBoundsException e) {
-    		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+		} catch (IndexOutOfBoundsException e) {
+    		throw new IndexOutOfBoundsException("User entered invalid variable character");
     		}
 		return true;
 	}
@@ -467,8 +467,8 @@ public class Parser {
 				}
 				i++;
 			}			
-		} catch (StringIndexOutOfBoundsException e) {
-    		throw new StringIndexOutOfBoundsException("Could not properly format trigonometric function(s)");
+		} catch (IndexOutOfBoundsException e) {
+    		throw new IndexOutOfBoundsException("Could not properly format trigonometric function(s)");
     		}
 		return userText;
 	}
