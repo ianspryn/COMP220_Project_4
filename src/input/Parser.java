@@ -23,6 +23,8 @@ public class Parser {
 		ArrayList<Character> charParse = new ArrayList<Character>(parse.replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
 		//time
 		//rotation
+		
+		convertRand(charParse);
 
 		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
 		convertTrig(charParse);
@@ -107,6 +109,7 @@ public class Parser {
 	            case 'p': //pi
 	            case 'i': //sin
 	            case 'n': //tan
+	            case 'r': //random
 	            case 's': //sqrt
 	            case 't': //time
 	            case 'x':
@@ -117,6 +120,9 @@ public class Parser {
 	            	
 	            case '.':
 	            	output += c;
+	            	break;
+	            	
+	            case ' ':
 	            	break;
 	            
 	            default:
@@ -251,12 +257,63 @@ public class Parser {
 		int i = 0;
 		while (i < userText.size()) {
 			char c = userText.get(i);
-			if (userText.get(i) == 'p') {
+			if (c == 'p') {
 				try {
 					if (userText.get(i + 1) == 'i') {
 						userText.remove(i + 1);
 					} else {
 						throw new IllegalArgumentException("user probably misstyped \"pi\" or treated \"p\" as a variable");
+					}
+				} catch (StringIndexOutOfBoundsException e) {
+					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+				}
+			}
+			i++;
+		}
+		return userText;
+	}
+	
+	public static ArrayList<Character> convertRand (ArrayList<Character> userText) {
+		int i = 0;
+		while (i < userText.size()) {
+			if (userText.get(i) == 'r') {
+				try {
+					//if the next letter is not t, then that confirms we are not confusing "sqrt" with "rand"
+					if (userText.get(i + 1) != 't') {
+						if (userText.get(i + 1) == 'a' && userText.get(i + 2) == 'n' && userText.get(i + 3) == 'd') {
+							userText.remove(i);
+							userText.remove(i);
+							userText.remove(i);
+							userText.remove(i);
+							if (userText.get(i) == '(') {
+								userText.remove(i);
+								if (Character.isDigit(userText.get(i))) {
+									i++;
+									boolean foundCloseParenthesis = false;
+									while (!foundCloseParenthesis) {
+										if (Character.isDigit(userText.get(i))) {
+											i++;
+										}
+										if (userText.get(i) == ',') {
+											userText.set(i, ' ');
+											i++;
+										}
+										if (userText.get(i) == ' ') {
+											i++;
+										}
+										if (userText.get(i) == ')') {
+											foundCloseParenthesis = true;
+											userText.set(i, ' ');
+											i++;
+										}
+									}
+								}
+							}
+							userText.add(i, 'r');
+							// userText.add(i, ' ');
+						} else {
+							throw new IllegalArgumentException("User did not format the random value properly");
+						}
 					}
 				} catch (StringIndexOutOfBoundsException e) {
 					throw new StringIndexOutOfBoundsException("User entered invalid variable character");
@@ -454,9 +511,6 @@ public class Parser {
             		// Example: 2+ or ^x
             		}
 			}
-			if (c == 'i' || c == 'c' || c == 'a' || c == 's') {
-				
-			}
 			
 			//Check if decimal is followed by digit
 			try {
@@ -519,18 +573,20 @@ public class Parser {
 				opsLeft.add(new OperationConstant(scnr.nextDouble()));
 			} else {
 				char op = scnr.next().charAt(0);
-				if(op == '+'){
+				if(op == '+') {
 					opsLeft.add(new OperationAdd(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '-'){
+				} else if (op == '-') {
 					opsLeft.add(new OperationSubtract(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '*'){
+				} else if (op == '*') {
 					opsLeft.add(new OperationMultiply(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '/'){
+				} else if (op == '/') {
 					opsLeft.add(new OperationDivide(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == '^'){
+				} else if (op == '^') {
 					opsLeft.add(new OperationPower(opsLeft.pop(), opsLeft.pop()));
-				} else if(op == 'p'){
+				} else if (op == 'p') {
 					opsLeft.add(new OperationConstant(Math.PI));
+				} else if (op == 'e') {
+					opsLeft.add(new OperationConstant(Math.E));
 				}
 			}
 		}
