@@ -24,7 +24,7 @@ public class Parser {
 	private static String parse;
 	private static String output = "";
 	
-	public static String translate(String parse) throws IOException {
+	public static Operation translate(String parse) throws IOException {
 		
 		ArrayList<Character> charParse = new ArrayList<Character>(parse.replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
 		//time
@@ -76,8 +76,7 @@ public class Parser {
 		for (Character s : charParse) {
 		    sb.append(s);
 		}		
-		String parsed = translateToPostfix(sb.toString().toLowerCase());
-		return parsed;
+		return stringToOperation(translateToPostfix(sb.toString().toLowerCase()));
 		
 	}
 	   
