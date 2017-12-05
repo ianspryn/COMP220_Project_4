@@ -21,9 +21,8 @@ public class Parser {
 	public static Operation translate(String parse) throws IOException {
 		
 		ArrayList<Character> charParse = new ArrayList<Character>(parse.replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
-		//time
-		//rotation
-		
+
+		output = "";
 		convertRand(charParse);
 
 		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p

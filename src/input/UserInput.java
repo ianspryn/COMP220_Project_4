@@ -32,11 +32,11 @@ public class UserInput {
 		Engine.timeIncrement = scnr.nextDouble();
 		scnr.nextLine();
 		
-		System.out.println("Enter the x. Available variables: time, x.");
+		System.out.println("Enter the x. Available variables: time, x. \nFormat examples: rand(0, 1) + sin(x)\nor rand(5, 10) + 2x + cos(tan(x))");
 		Engine.x = Parser.translate(scnr.nextLine());
-		System.out.println("Enter the y. Available variables: time, y, x.");
+		System.out.println("Enter the y. Available variables: time, y, x. \nFormat examples: rand(0, 1) + sin(y)\nor rand(5, 10) * 2y + cos(tan(y))");
 		Engine.y = Parser.translate(scnr.nextLine());
-		System.out.println("Enter the z. Available variables: time, z, y, x.");
+		System.out.println("Enter the z. Available variables: time, z, y, x. \nFormat examples: rand(0, 1) + sin(z)\nor rand(5, 10) / 2z + cos(tan(z))");
 		Engine.z = Parser.translate(scnr.nextLine());
 		
 		System.out.println("How many particles would you like to simulate?");
