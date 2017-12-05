@@ -8,7 +8,11 @@ import renderEngine.Render;
 public class Particle {
 	
 	//TEMPORARY PUBLIC DOUBLES - Eventually use operations
-	public double x, y, z, time = 1;
+	public double x, y, z, time;
+	
+	public Particle(){
+		time = new Random().nextDouble() * 100;
+	}
 	
 	/**
 	 * Generates a particle with a randomized time. Probably should be changed.
