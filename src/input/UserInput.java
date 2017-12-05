@@ -20,12 +20,11 @@ public class UserInput {
 
 		Scanner scnr = new Scanner(System.in);
 		
+//		System.out.println("Please enter your function");
 		//take the user input as a string, remove all spaces from it, and convert it to an ArrayList of characters
 		ArrayList<Character> charParse = new ArrayList<Character>(scnr.nextLine().replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
 		//time
 		//rotation
-//		
-//		System.out.println("Please enter your function");
 		
 		//Add parentheses around first operator after trigonometric function
 		//Example: sinx2 becomes sin(x)2
@@ -34,8 +33,6 @@ public class UserInput {
 			addTrigParentheses(charParse);
 		}
 		
-		
-		
 		//Convert user input containing absolutely value of something like |x| to a(x)
 		convertAbs(charParse);
 		
@@ -43,7 +40,7 @@ public class UserInput {
 		convertPi(charParse);
 		
 		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
-		convertNames(charParse);
+		convertTrig(charParse);
 		
 		//Add multiples before opening parentheses
 		//Example: 2(x) becomes 2*(x)
@@ -52,7 +49,6 @@ public class UserInput {
 			//If it is not greater than 1, then it is guaranteed there is no multiples that is applicable
 			addMultiple(charParse);
 		}
-		
 		
 		//Check if parentheses are balanced in user input. If not, throw an exception
 		if (!isBalanced(charParse)) {
@@ -63,16 +59,13 @@ public class UserInput {
 			Collections.replaceAll(charParse, ']', ')');
 		}
 		
-		//TODO: UNCOMMENT THIS CODE
-//		Check if user inputs invalid character(s), includes at least 1 variable, and there are no 2 operands in a row
-//		Example: Not allowed: underscore (_), percent (%), 2++x
-//		Example: Includes a mathematical variable, like 2+x
-//				if (!isValidInput(charParse)) {
-//					throw new IllegalArgumentException("Invalid input");
-//				}
+		//Check if user inputs invalid character(s), includes at least 1 variable, and there are no 2 operands in a row
+		//Example: Not allowed: underscore (_), percent (%), 2++x
+		//Example: Includes a mathematical variable, like 2+x
+		if (!isValidInput(charParse)) {
+			throw new IllegalArgumentException("Invalid input");
+		}
 		
-		
-
 		//Rebuild ArrayList of characters back into a string
 		StringBuilder sb = new StringBuilder();
 		for (Character s : charParse) {
@@ -82,7 +75,6 @@ public class UserInput {
 		System.out.println(parsed);
 		Operation op = StringToOperation.stringToOperation(parsed);
 		System.out.println(op.operate());
-		
 	}
 	
 	public static ArrayList<Character> addTrigParentheses (ArrayList<Character> userText) {
@@ -135,15 +127,15 @@ public class UserInput {
 		}
 		return userText;
 	}
+	
 	/**
 	 * Convert absolute value symbols into a more easily parsable format
-	 * Convert pi to p
 	 * Example: |x| becomes a[x]
 	 * Example: |sin(x)| becomes a[sin(x)]
 	 * Note: brackets are used instead of parentheses in order to use isBalanced(). If they were sent to parentheses, (|)| would
 	 * return true even though it should be false.
 	 * @param userText
-	 * @return an ArrayList with the newly formatted absolute value and pi symbols
+	 * @return an ArrayList with the newly formatted absolute value
 	 */
 	public static ArrayList<Character> convertAbs (ArrayList<Character> userText) {
 		if (userText.contains('|')) {
@@ -166,7 +158,12 @@ public class UserInput {
 		}
 		return userText;
 	}
-	
+
+	/**
+	 * Converts pi to a single variable of p
+	 * @param userText
+	 * @return an ArrayList with only p for pi
+	 */
 	public static ArrayList<Character> convertPi (ArrayList<Character> userText) {
 		int i = 0;
 		while (i < userText.size()) {
@@ -187,7 +184,14 @@ public class UserInput {
 		return userText;
 	}
 	
-	public static ArrayList<Character> convertNames (ArrayList<Character> userText) {
+	/**
+	 * Converts trigonometric functions into single-letter functions
+	 * Example: sin --> i
+	 * Example: cos --> c
+	 * @param userText
+	 * @return an ArrayList of single-letter trigonometric functions
+	 */
+	public static ArrayList<Character> convertTrig (ArrayList<Character> userText) {
 		int i = 0;
 		while (i < userText.size()) {
 			char c = userText.get(i);
