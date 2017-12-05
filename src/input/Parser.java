@@ -371,32 +371,33 @@ public class Parser {
 	        		} else {
 	        			throw new IllegalArgumentException("user probably misstyped \"sin\" or \"sqrt\" or treated \"s\" as a variable");
 	        		}
-	        	} catch (StringIndexOutOfBoundsException e) {
-	        		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+	        	} catch (IndexOutOfBoundsException e) {
+	        		throw new IndexOutOfBoundsException("User entered invalid variable character");
 	        		}
 			}
 	        //Potentially a cosine function
 	        if (c == 'c') {
-	        	/*
-	        	 * The try catch statement is a safe guard so that if the user enters the character 'c' and intended
-	        	 * it to be a variable, the program will still fail gracefully
-	        	 */	 
-	        	try {
-	        		if (userText.get(i + 1) == 'o' && userText.get(i + 2) == 's') {
-	        			//remove the "os" in "cos"
-	        			userText.remove(i + 1);
-	        			userText.remove(i + 1);
-	        		} else {
-	        			throw new IllegalArgumentException("user probably misstyped \"cos\" or treated \"c\" as a variable");
-	        		}
-	        	} catch (StringIndexOutOfBoundsException e) {
-	        		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
-	        		}
-	        		
+	        	if (userText.size() > 1){
+		        	/*
+		        	 * The try catch statement is a safe guard so that if the user enters the character 'c' and intended
+		        	 * it to be a variable, the program will still fail gracefully
+		        	 */	 
+		        	try {
+		        		if (userText.get(i + 1) == 'o' && userText.get(i + 2) == 's') {
+		        			//remove the "os" in "cos"
+		        			userText.remove(i + 1);
+		        			userText.remove(i + 1);
+		        		} else {
+		        			throw new IllegalArgumentException("user probably misstyped \"cos\" or treated \"c\" as a variable");
+		        		}
+		        	} catch (IndexOutOfBoundsException e) {
+		        		throw new IndexOutOfBoundsException("User entered invalid variable character");
+		        		}
+	        	}
 	        }
 	        	
 	        //Potentially a tangent function
-	        if (c == 't') {
+	        if (c == 'n') {
 	        	/*
 	        	 * The try catch statement is a safe guard so that if the user enters the character 't' and intended
 	        	 * it to be a variable, the program will still fail gracefully
@@ -409,8 +410,8 @@ public class Parser {
 	        		} else {
 	        			throw new IllegalArgumentException("user probably misstyped \"tan\" or treated \"t\" as a variable");
 	        		}
-	        	} catch (StringIndexOutOfBoundsException e) {
-	        		throw new StringIndexOutOfBoundsException("User entered invalid variable character");
+	        	} catch (IndexOutOfBoundsException e) {
+	        		throw new IndexOutOfBoundsException("User entered invalid variable character");
 	        		}
 	        }
 			i++;
