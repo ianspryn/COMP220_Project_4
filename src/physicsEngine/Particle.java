@@ -11,7 +11,7 @@ public class Particle {
 	public double x, y, z, time;
 	
 	public Particle(){
-		time = new Random().nextDouble() * 100;
+		time = new Random().nextDouble()*100;
 	}
 	
 	/**
