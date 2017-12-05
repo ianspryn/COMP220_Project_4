@@ -2,17 +2,21 @@ package operations;
 
 public class OperationConstant implements Operation {
 	
-	Double a;
+	double a;
 	
-	//Maybe have an OperationParticleVariable?
+	/**
+	 * Creates a constant that does not change.
+	 * 
+	 * @param a Constant value
+	 */
 	
-	public OperationConstant(Double a){
+	public OperationConstant(double a){
 		this.a = a;
 	}
 	
 	@Override
 	public double operate(){
-		return a.doubleValue();
+		return a;
 	}
 
 }

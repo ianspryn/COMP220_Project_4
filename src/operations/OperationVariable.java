@@ -6,6 +6,13 @@ public class OperationVariable implements Operation {
 	
 	char variable;
 	
+	/**
+	 * Uses the iterator in ParticleField to access the variable value on the
+	 * current particle being manipulated.
+	 * 
+	 * @param c Variable represented as a char
+	 */
+	
 	public OperationVariable(char c){
 		variable = c;
 	}
