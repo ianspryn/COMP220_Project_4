@@ -13,8 +13,8 @@ public class OperationRandom implements Operation {
 	 * @param b Maximum random value
 	 */
 	
-	public OperationRandom(double a, double b){
-		chosen = a + ((b-a)*new Random().nextDouble());
+	public OperationRandom(Operation a, Operation b){
+		chosen = a.operate() + ((b.operate()-a.operate())*new Random().nextDouble());
 	}
 	
 	public double operate(){

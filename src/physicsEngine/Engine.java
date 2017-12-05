@@ -11,9 +11,9 @@ public class Engine implements Runnable {
 	public static double timeIncrement;
 	public static Operation x, y, z;
 	
-	public Engine(){
+	public Engine(int particles){
 		//TODO: Should have input from parameter, or move this step somewhere else
-		ParticleField.createField(5000);
+		ParticleField.createField(particles);
 	}
 	
 	/**

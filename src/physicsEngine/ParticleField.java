@@ -10,17 +10,24 @@ public class ParticleField {
 	private static Iterator<Particle> partIter;
 	private static Particle currentParticle;
 	
-	//CURRENTLY ASSUMING THERE ARE ALWAYS PARTICLES
+	/**
+	 * Creates the ArrayList of particles.
+	 * 
+	 * @param numberOfParticles Number of particles rendered in the field
+	 */
 	
 	public static void createField(int numberOfParticles){
-		Random random = new Random();
 		particles = new ArrayList<Particle>();
 		for(int i = 0; i < numberOfParticles; i++){
-			particles.add(new Particle(random.nextDouble()*100,random.nextDouble()*100,50-random.nextDouble()*100));
+			particles.add(new Particle());
 		}
 		partIter = particles.iterator();
 		
 	}
+	
+	/**
+	 * 	 @return Current particle the class iterator is at.
+	 */
 	
 	public static Particle getCurrentParticle(){
 		return currentParticle;

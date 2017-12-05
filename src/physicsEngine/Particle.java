@@ -10,8 +10,6 @@ public class Particle {
 	//TEMPORARY PUBLIC DOUBLES - Eventually use operations
 	public double x, y, z, time = 1;
 	
-	private Color color;
-	
 	/**
 	 * Generates a particle with a randomized time. Probably should be changed.
 	 * 
@@ -20,20 +18,6 @@ public class Particle {
 	 * @param z Initial z value.
 	 */
 	
-	public Particle(double x, double y, double z){
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		Random random = new Random();
-		//color = new Color(255,255,255);
-		time = random.nextDouble()*Math.PI*2;
-		/*
-		 Setting up particles
-		this.y = Math.sin(time)*y;
-		this.x = Math.cos(time)*y;
-		this.z = Math.sqrt(10000 - Math.pow(x, 2) - Math.pow(y, 2));
-		 */
-	}
 	
 	/**
 	 * Projects the 3D particle unto 2D for rendering.

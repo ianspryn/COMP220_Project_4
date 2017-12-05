@@ -39,9 +39,13 @@ public class UserInput {
 		System.out.println("Enter the z. Available variables: time, z, y, x.");
 		Engine.z = Parser.translate(scnr.nextLine());
 		
+		System.out.println("How many particles would you like to simulate?");
+		
+		int number = scnr.nextInt();
+		
 		scnr.close();
 		
-		Thread engine = new Thread(new Engine());
+		Thread engine = new Thread(new Engine(number));
 		engine.start();
 		Thread render = new Thread(new Display());
 		render.start();

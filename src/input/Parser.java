@@ -587,10 +587,28 @@ public class Parser {
 					opsLeft.add(new OperationConstant(Math.PI));
 				} else if (op == 'e') {
 					opsLeft.add(new OperationConstant(Math.E));
+				} else if (op == 'r') {
+					opsLeft.add(new OperationRandom(opsLeft.pop(), opsLeft.pop()));
+				} else if (op == 'a') {
+					opsLeft.add(new OperationAbsoluteValue(opsLeft.pop()));
+				} else if (op == 'i') {
+					opsLeft.add(new OperationSine(opsLeft.pop()));
+				} else if (op == 'c') {
+					opsLeft.add(new OperationCosine(opsLeft.pop()));
+				} else if (op == 'n') {
+					opsLeft.add(new OperationTangent(opsLeft.pop()));
+				} else if (op == 'x') {
+					opsLeft.add(new OperationVariable('x'));
+				} else if (op == 'y') {
+					opsLeft.add(new OperationVariable('y'));
+				} else if (op == 'z') {
+					opsLeft.add(new OperationVariable('z'));
+				} else if (op == 't') {
+					opsLeft.add(new OperationVariable('t'));
 				}
 			}
 		}
 		scnr.close();
-		return opsLeft.get(0);
+		return opsLeft.pop();
 	}
 }
