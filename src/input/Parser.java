@@ -408,7 +408,7 @@ public class Parser {
 	        			//remove the "ta" in "tan"
 	        			userText.remove(i);
 	        			userText.remove(i - 2);
-	        			i++;
+	        			i -= 2;
 	        		} else {
 	        			throw new IllegalArgumentException("user probably misstyped \"tan\"");
 	        		}
