@@ -7,7 +7,6 @@ import renderEngine.Render;
 
 public class Particle {
 	
-	//TEMPORARY PUBLIC DOUBLES - Eventually use operations
 	public double x, y, z, time;
 	
 	public Particle(){

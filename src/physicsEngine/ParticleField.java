@@ -33,6 +33,12 @@ public class ParticleField {
 		return currentParticle;
 	}
 	
+	/**
+	 * Moves the iterator along one, resets the iterator if no elements are left.
+	 *  
+	 * @return False if the iterator has reached the end
+	 */
+	
 	public static boolean cycleAndIfHasNext(){
 		if(partIter.hasNext()){
 			currentParticle = partIter.next();
