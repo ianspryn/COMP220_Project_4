@@ -21,9 +21,8 @@ public class Parser {
 	public static Operation translate(String parse) throws IOException {
 		
 		ArrayList<Character> charParse = new ArrayList<Character>(parse.replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
-		//time
-		//rotation
-		
+
+		output = "";
 		convertRand(charParse);
 
 		//sin --> i, cos --> c, tan --> a, sqrt --> s, pi --> p
@@ -47,7 +46,7 @@ public class Parser {
 		//Move the trigonometric type and or the square root to the end of the parentheses
 		//Example: sin(x + 2) becomes (x + 2)sin
 		//Example: sqrt(y) becomes (y)sqrt
-		translateTrigOrSquare(charParse);
+		translateFormat(charParse);
 		//Convert user input containing absolutely value of something like |x| to a(x)
 		convertAbs(charParse);
 		
@@ -78,6 +77,11 @@ public class Parser {
 		
 	}
 	   
+	/**
+	 * Convert from Infix to Postfix
+	 * @param parse
+	 * @return a string in a postfix format
+	 */
 	public static String translateToPostfix(String parse) {
 		Parser.parse = parse;
 		stack = new Stack<Character>();
@@ -151,7 +155,12 @@ public class Parser {
 		}
 		return output;
 	}
-	   
+	
+	/**
+	 * Check precedence of operand and add to output string accordingly
+	 * @param opThis
+	 * @param prec1
+	 */
 	public static void gotOper(char opThis, int prec1) {
 		while (!stack.isEmpty()) {
 			if (stack.peek() != '(') {
@@ -168,7 +177,10 @@ public class Parser {
 		}
 		stack.push(opThis);
 	}
-	   
+	
+	/**
+	 * See if there are any remaining parentheses in stack
+	 */
 	public static void gotParen() {
 		while (!stack.isEmpty()) {
 			if (stack.peek() != '('){
@@ -273,6 +285,11 @@ public class Parser {
 		return userText;
 	}
 	
+	/**
+	 * Convert a random in a format of rand(a, b) to a format of a b r
+	 * @param userText
+	 * @return the new format of rand(a, b)
+	 */
 	public static ArrayList<Character> convertRand (ArrayList<Character> userText) {
 		int i = 0;
 		while (i < userText.size()) {
@@ -401,6 +418,12 @@ public class Parser {
 		return userText;
 	}
 	
+	/**
+	 * Verify a trig has a parenthesis after it.
+	 * @param userText
+	 * @return if a trig has a parenthesis after it.
+	 * @throws IOException
+	 */
 	public static boolean verifyTrig(ArrayList<Character> userText) throws IOException {
 		try {
 			for (int i = 0; i < userText.size(); i++) {
@@ -417,13 +440,18 @@ public class Parser {
 		return true;
 	}
 	
-	public static ArrayList<Character> translateTrigOrSquare (ArrayList<Character> userText) {
+	/**
+	 * Move sin, cos, tan, sqrt, and absolute value to the end of the operator.
+	 * @param userText
+	 * @return the new sorted version of userText
+	 */
+	public static ArrayList<Character> translateFormat(ArrayList<Character> userText) {
 		Stack<Character> stack = new Stack<Character>();
 		try {
 			int i = 0;
 			while (i < userText.size()) {
 				char c = userText.get(i);
-				if (c == 'i' || c == 'c' || c == 'n' || c == 's') {
+				if (c == 'i' || c == 'c' || c == 'n' || c == 's' || c == 'a') {
 					stack.push(userText.remove(i));
 					}
 				while (!stack.isEmpty()) {
@@ -562,8 +590,11 @@ public class Parser {
 		return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')';
 	}
 	
-	//TODO: INCORPORATE OPERATION CONVERTER
-	
+	/**
+	 * 
+	 * @param unpros
+	 * @return
+	 */
 	public static Operation stringToOperation(String unpros){
 		Stack<Operation> opsLeft = new Stack<Operation>();
 		
