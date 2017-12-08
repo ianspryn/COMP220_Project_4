@@ -208,16 +208,16 @@ public class Parser {
 			char c = userText.get(i);
 			//If it is a variable, or first letter of sin, cos, tan, sqrt, pi, or e
 			if(c == '(' || isVariable(c) || c == 'i' || c == 'c' || c == 'n' || c == 's' || c == 'p' || c == 'e') {
-				//Make sure the character before the current position is a number or a letter and that it is not a trigonometric function or a square root function
+				//Make sure the character before the current position is a number or a letter and that it is not a trigonometric function, or a square root function
 				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1)))
-						&& userText.get(i - 1) != 'i' && userText.get(i - 1) != 'c' && userText.get(i - 1) != 'n' && userText.get(i - 1) != 'a' && userText.get(i - 1) != 's') {
+						&& userText.get(i - 1) != 'i' && userText.get(i - 1) != 'c' && userText.get(i - 1) != 'n' && userText.get(i - 1) != 's') {
 					userText.add(i, '*'); 
 					i++;	
 				}
 			}
-			//if it is a variable, a digit, or first letter of sin, cos, tan, absolute value, pi, or e
-			if ((isVariable(c) || Character.isDigit(c) || c == 'i' || c == 'c' || c == 'n' || c == 'a' || c== 'p' || c == 'e')
-					&& (userText.get(i - 1) == ')' || userText.get(i - 1) == 'i' || userText.get(i - 1) == 'e')) {
+			//if it is a variable, the variable t, a digit, a trigonometric function, pi, or e, and the character before it is a close parenthesis, a variable, the variable t, the pi constant, or e constant
+			if ((isVariable(c) || c == 't' || Character.isDigit(c) || c == 'i' || c == 'c' || c == 'n' || c== 'p' || c == 'e')
+					&& (userText.get(i - 1) == ')' || isVariable(userText.get(i - 1)) || userText.get(i - 1) == 't' || userText.get(i - 1) == 'p' || userText.get(i - 1) == 'e')) {
 				userText.add(i, '*');
 				i++;
 			}
@@ -408,7 +408,7 @@ public class Parser {
 	        	try {
 	        		if (userText.get(i - 1) == 'a' && userText.get(i - 2) == 't') {
 	        			//remove the "ta" in "tan"
-	        			userText.remove(i);
+	        			userText.remove(i - 1);
 	        			userText.remove(i - 2);
 	        			i -= 2;
 	        		} else {
