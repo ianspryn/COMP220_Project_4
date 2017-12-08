@@ -13,6 +13,7 @@ public class Parser {
 	
 	// Will parse an input into operations
 	//2t
+	//TODO: Fix cos(xsin(x));
 
 	private static Stack<Character> stack;
 	private static String parse;
@@ -65,8 +66,7 @@ public class Parser {
 		//Example: Not allowed: underscore (_), percent (%), 2++x
 		//Example: Includes a mathematical variable, like 2+x
 		if (!isValidInput(charParse)) {
-			//throw new IllegalArgumentException("Invalid input");
-			//TODO: Remove xyz variables
+			throw new IllegalArgumentException("Invalid input");
 		}
 		
 		//Rebuild ArrayList of characters back into a string
@@ -216,9 +216,11 @@ public class Parser {
 					i++;	
 				}
 			}
-			//if it is a variable, the variable t, a digit, a trigonometric function, pi, or e, and the character before it is a close parenthesis, a variable, the variable t, the pi constant, or e constant
+			//if it is a variable, the variable t, a digit, a trigonometric function, pi, or e,
+			//and the character before it is a close parenthesis,a variable, the variable t, the pi constant, or e constant
 			if ((isVariable(c) || c == 't' || Character.isDigit(c) || c == 'i' || c == 'c' || c == 'n' || c== 'p' || c == 'e')
-					&& (userText.get(i - 1) == ')' || isVariable(userText.get(i - 1)) || userText.get(i - 1) == 't' || userText.get(i - 1) == 'p' || userText.get(i - 1) == 'e')) {
+					&&  (userText.get(i - 1) == ')' || isVariable(userText.get(i - 1))
+							|| userText.get(i - 1) == 't' || userText.get(i - 1) == 'p' || userText.get(i - 1) == 'e')) {
 				userText.add(i, '*');
 				i++;
 			}
@@ -226,6 +228,11 @@ public class Parser {
 			if (Character.isDigit(c) && (isVariable(userText.get(i - 1)) || userText.get(i - 1) == 'p' || userText.get(i - 1) == 'e')) {
 				userText.add(i, '*');
 				i++;
+			}
+			
+			//If it is the variable t and there is a digit before it, add a multiplication symbol between it
+			if (c == 't' && Character.isDigit(userText.get(i - 1))) {
+				userText.add(i, '*');
 			}
 			i++;
 		}
