@@ -1,6 +1,5 @@
 package input;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +12,7 @@ import operations.*;
 public class Parser {
 	
 	// Will parse an input into operations
+	//2t
 
 	private static Stack<Character> stack;
 	private static String parse;
@@ -208,8 +208,9 @@ public class Parser {
 			char c = userText.get(i);
 			//If it is a variable, or first letter of sin, cos, tan, sqrt, pi, or e
 			if(c == '(' || isVariable(c) || c == 'i' || c == 'c' || c == 'n' || c == 's' || c == 'p' || c == 'e') {
-				//Make sure the character before the current position is a number or a letter and that it is not a trigonometric function, or a square root function
-				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1)))
+				//Make sure the character before the current position is a number, a letter, or a close parenthesis
+				//and that it is not a trigonometric function, or a square root function
+				if ((Character.isDigit(userText.get(i - 1)) || Character.isAlphabetic(userText.get(i - 1)) || userText.get(i - 1) == ')')
 						&& userText.get(i - 1) != 'i' && userText.get(i - 1) != 'c' && userText.get(i - 1) != 'n' && userText.get(i - 1) != 's') {
 					userText.add(i, '*'); 
 					i++;	
