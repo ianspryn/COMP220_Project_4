@@ -21,7 +21,7 @@ public class Parser {
 	
 	public static Operation translate(String parse) throws IOException {
 		
-		ArrayList<Character> charParse = new ArrayList<Character>(parse.replaceAll("\\s+", "").chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
+		ArrayList<Character> charParse = new ArrayList<Character>(parse.replaceAll("\\s+", "").toLowerCase().chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
 
 		output = "";
 		convertRand(charParse);
@@ -363,7 +363,7 @@ public class Parser {
 		while (i < userText.size()) {
 			char c = userText.get(i);
 			//Potentially a sine or sqrt function
-	       if (c == 's') {
+			if (c == 's') {
 	        	/*
 	        	 * The try catch statement is a safe guard so that if the user enters the character 's' and intended
 	        	 * it to be a variable, the program will still fail gracefully
@@ -531,7 +531,6 @@ public class Parser {
 		boolean isValid = true;
 		boolean balancedOperand = true;
 		boolean decimalSurrounded = true;
-		boolean properTrigorSquare = true;
 		for (int i = 0; i < userText.size(); i++) {
 			char c = userText.get(i);
 			
